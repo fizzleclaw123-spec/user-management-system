@@ -118,14 +118,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0 rounded-start-3"><i class="bi bi-person-fill text-muted"></i></span>
-                        <input type="text" name="username" placeholder="Username *" required class="form-control border-start-0 ps-0">
+                        <input type="text" name="username" placeholder="Username *" class="form-control border-start-0 ps-0">
                     </div>
                 </div>
                 
                 <div class="mb-3 position-relative">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0 rounded-start-3"><i class="bi bi-lock-fill text-muted"></i></span>
-                        <input type="password" name="password" id="password" placeholder="Password *" required class="form-control border-start-0 ps-0">
+                        <input type="password" name="password" id="password" placeholder="Password *" class="form-control border-start-0 ps-0">
                         <button type="button" onclick="togglePassword()" class="btn btn-outline-secondary border-start-0 rounded-end-3 bg-white" id="toggleBtn"><i class="bi bi-eye-fill"></i></button>
                     </div>
                 </div>
@@ -183,10 +183,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             if (!username) {
                 e.preventDefault();
-                $('#js-error').text("Username is required.").removeClass('d-none');
+                alert("Username is required.");
             } else if (!password) {
                 e.preventDefault();
-                $('#js-error').text("Password is required.").removeClass('d-none');
+                alert("Password is required.");
             }
         });
 
