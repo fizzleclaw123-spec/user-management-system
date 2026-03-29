@@ -126,8 +126,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             
-            if (username === "" || password === "") {
-                alert("Please fill in both the username and password fields.");
+            if (username === "") {
+                alert("Username is required.");
+                return false;
+            }
+            if (password === "") {
+                alert("Password is required.");
                 return false;
             }
             return true;
