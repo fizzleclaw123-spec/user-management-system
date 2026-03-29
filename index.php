@@ -3,6 +3,7 @@
 session_start();
 require 'db.php';
 
+$js_error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -16,7 +17,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: profile.php");
         exit;
     } else {
-        $error = "Invalid credentials.";
+        $js_error = "Incorrect password.";
     }
 }
 ?>
@@ -95,10 +96,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="alert alert-success border-0 rounded-3"><?php echo htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?></div>
             <?php endif; ?>
 
-            <?php if (isset($error)): ?>
-                <div class="alert alert-danger border-0 rounded-3"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
-
             <form method="POST" onsubmit="return validateForm()">
                 <div class="mb-3">
                     <div class="input-group">
@@ -122,6 +119,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
+        <?php if (!empty($js_error)): ?>
+            alert("<?php echo $js_error; ?>");
+        <?php endif; ?>
+
         function validateForm() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
