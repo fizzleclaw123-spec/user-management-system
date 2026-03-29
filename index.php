@@ -3,7 +3,7 @@
 session_start();
 require 'db.php';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
 
@@ -15,8 +15,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $_SESSION['username'] = $username;
         header("Location: profile.php");
         exit;
-    } else {
-        $error = "Invalid username or password.";
     }
 }
 ?>
@@ -95,11 +93,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="alert alert-success border-0 rounded-3"><?php echo htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?></div>
             <?php endif; ?>
 
-            <?php if (isset($error)): ?>
-                <div class="alert alert-danger border-0 rounded-3" id="error-alert"><?php echo htmlspecialchars($error); ?></div>
-            <?php endif; ?>
-
-            <form method="POST" onsubmit="return validateForm()">
+            <form id="loginForm" method="POST">
+                <input type="hidden" name="login_submit" value="1">
                 <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0 rounded-start-3"><i class="bi bi-person-fill text-muted"></i></span>
@@ -115,33 +110,41 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     </div>
                 </div>
 
-                <button type="submit" class="btn btn-primary w-100 fw-bold shadow-sm">Login <i class="bi bi-arrow-right"></i></button>
+                <button type="button" onclick="handleLogin()" class="btn btn-primary w-100 fw-bold shadow-sm">Login <i class="bi bi-arrow-right"></i></button>
                 <p class="mt-4 text-center text-white">Don't have an account? <a href="register.php" class="text-white fw-bold">Register</a></p>
             </form>
         </div>
     </div>
 
     <script>
-        // Check for server-side error and show in alert
-        <?php if (isset($error)): ?>
-            alert("<?php echo htmlspecialchars($error); ?>");
-            // Hide the red banner since we are using an alert
-            document.getElementById('error-alert').style.display = 'none';
-        <?php endif; ?>
-
-        function validateForm() {
+        async function handleLogin() {
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value.trim();
             
             if (username === "") {
                 alert("Username is required.");
-                return false;
+                return;
             }
             if (password === "") {
                 alert("Password is required.");
-                return false;
+                return;
             }
-            return true;
+
+            const formData = new FormData();
+            formData.append('username', username);
+            formData.append('password', password);
+
+            const response = await fetch('login_check.php', {
+                method: 'POST',
+                body: formData
+            });
+
+            const result = await response.json();
+            if (result.status === 'success') {
+                document.getElementById('loginForm').submit();
+            } else {
+                alert(result.message);
+            }
         }
         function togglePassword() {
             const p = document.getElementById('password');
