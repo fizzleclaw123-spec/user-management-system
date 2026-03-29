@@ -3,7 +3,6 @@
 session_start();
 require 'db.php';
 
-$js_error = "";
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $username = $_POST['username'];
     $password = $_POST['password'];
@@ -17,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         header("Location: profile.php");
         exit;
     } else {
-        $js_error = "Incorrect password.";
+        $error = "Invalid username or password.";
     }
 }
 ?>
@@ -96,6 +95,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="alert alert-success border-0 rounded-3"><?php echo htmlspecialchars($_SESSION['success']); unset($_SESSION['success']); ?></div>
             <?php endif; ?>
 
+            <?php if (isset($error)): ?>
+                <div class="alert alert-danger border-0 rounded-3" id="error-alert"><?php echo htmlspecialchars($error); ?></div>
+            <?php endif; ?>
+
             <form method="POST" onsubmit="return validateForm()">
                 <div class="mb-3">
                     <div class="input-group">
@@ -119,8 +122,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
-        <?php if (!empty($js_error)): ?>
-            alert("<?php echo $js_error; ?>");
+        // Check for server-side error and show in alert
+        <?php if (isset($error)): ?>
+            alert("<?php echo htmlspecialchars($error); ?>");
+            // Hide the red banner since we are using an alert
+            document.getElementById('error-alert').style.display = 'none';
         <?php endif; ?>
 
         function validateForm() {
