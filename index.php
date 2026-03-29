@@ -62,12 +62,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['login_submit'])) {
         .btn-primary {
             border-radius: 12px;
             padding: 12px;
-            background: #ff9a9e;
+            background: #6a11cb;
             border: none;
             transition: transform 0.2s ease;
         }
         .btn-primary:hover {
-            background: #ff758c;
+            background: #2575fc;
             transform: translateY(-2px);
         }
         .paw-mark {
