@@ -99,18 +99,18 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="alert alert-danger border-0 rounded-3"><?php echo htmlspecialchars($error); ?></div>
             <?php endif; ?>
 
-            <form method="POST">
+            <form method="POST" onsubmit="return validateForm()">
                 <div class="mb-3">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0 rounded-start-3"><i class="bi bi-person-fill text-muted"></i></span>
-                        <input type="text" name="username" placeholder="Username" required class="form-control border-start-0 ps-0">
+                        <input type="text" name="username" id="username" placeholder="Username" class="form-control border-start-0 ps-0">
                     </div>
                 </div>
                 
                 <div class="mb-4 position-relative">
                     <div class="input-group">
                         <span class="input-group-text bg-white border-end-0 rounded-start-3"><i class="bi bi-lock-fill text-muted"></i></span>
-                        <input type="password" name="password" id="password" placeholder="Password" required class="form-control border-start-0 ps-0">
+                        <input type="password" name="password" id="password" placeholder="Password" class="form-control border-start-0 ps-0">
                         <button type="button" onclick="togglePassword()" class="btn btn-outline-secondary border-start-0 rounded-end-3 bg-white" id="toggleBtn"><i class="bi bi-eye-fill"></i></button>
                     </div>
                 </div>
@@ -122,6 +122,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 
     <script>
+        function validateForm() {
+            const username = document.getElementById('username').value.trim();
+            const password = document.getElementById('password').value.trim();
+            
+            if (username === "" || password === "") {
+                alert("Please fill in both the username and password fields.");
+                return false;
+            }
+            return true;
+        }
         function togglePassword() {
             const p = document.getElementById('password');
             const btn = document.getElementById('toggleBtn');
